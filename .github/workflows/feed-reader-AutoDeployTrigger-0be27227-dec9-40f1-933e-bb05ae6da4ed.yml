@@ -40,6 +40,5 @@ jobs:
           containerAppName: feed-reader
           resourceGroup: zhiyongli-tanzu
           imageToBuild: zhiyongliacr.azurecr.io/feed-reader:${{ github.sha }}
-          dockerfilePath: Dockerfile
 
 
