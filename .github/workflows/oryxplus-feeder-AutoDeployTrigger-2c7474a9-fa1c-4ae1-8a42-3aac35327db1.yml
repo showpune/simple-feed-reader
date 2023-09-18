@@ -40,6 +40,5 @@ jobs:
           containerAppName: oryxplus-feeder
           resourceGroup: zhiyongli-tanzu
           imageToBuild: showpune/oryxplus-feeder:${{ github.sha }}
-          dockerfilePath: Dockerfile
 
 
