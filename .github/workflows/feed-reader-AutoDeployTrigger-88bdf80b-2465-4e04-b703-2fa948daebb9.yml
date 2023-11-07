@@ -1,0 +1,42 @@
+name: Trigger auto deployment for feed-reader
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/feed-reader-AutoDeployTrigger-88bdf80b-2465-4e04-b703-2fa948daebb9.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.FEEDREADER_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.FEEDREADER_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.FEEDREADER_REGISTRY_PASSWORD }}
+          containerAppName: feed-reader
+          resourceGroup: zhiyongli-tanzu
+          imageToBuild: showpune/feed-reader:${{ github.sha }}
+          
+
+     
+
